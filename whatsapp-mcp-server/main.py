@@ -1,4 +1,5 @@
 from typing import List, Dict, Any, Optional
+import json
 from mcp.server.fastmcp import FastMCP
 from whatsapp import (
     search_contacts as whatsapp_search_contacts,
@@ -12,8 +13,15 @@ from whatsapp import (
     download_media as whatsapp_download_media
 )
 
-# Initialize FastMCP server
-mcp = FastMCP("whatsapp")
+# Custom JSON encoder to handle Python boolean values
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, bool):
+            return str(obj).lower()
+        return super().default(obj)
+
+# Initialize FastMCP server with custom JSON encoder
+mcp = FastMCP("whatsapp", json_encoder=CustomJSONEncoder)
 
 @mcp.tool()
 def search_contacts(query: str) -> List[Dict[str, Any]]:
@@ -48,7 +56,7 @@ def list_messages(
         query: Optional search term to filter messages by content
         limit: Maximum number of messages to return (default 20)
         page: Page number for pagination (default 0)
-        include_context: Whether to include messages before and after matches (default true)
+        include_context: Whether to include messages before and after matches (default True)
         context_before: Number of messages to include before each match (default 1)
         context_after: Number of messages to include after each match (default 1)
     """
@@ -80,7 +88,7 @@ def list_chats(
         query: Optional search term to filter chats by name or JID
         limit: Maximum number of chats to return (default 20)
         page: Page number for pagination (default 0)
-        include_last_message: Whether to include the last message in each chat (default True)
+        include_last_message: Whether to include the last message in each chat (default is true and not True)
         sort_by: Field to sort results by, either "last_active" or "name" (default "last_active")
     """
     chats = whatsapp_list_chats(
@@ -98,7 +106,7 @@ def get_chat(chat_jid: str, include_last_message: bool = True) -> Dict[str, Any]
     
     Args:
         chat_jid: The JID of the chat to retrieve
-        include_last_message: Whether to include the last message (default True)
+        include_last_message: Whether to include the last message (default is true and not True)
     """
     chat = whatsapp_get_chat(chat_jid, include_last_message)
     return chat
