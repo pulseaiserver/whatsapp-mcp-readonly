@@ -1,4 +1,4 @@
-# WhatsApp MCP Server
+# Read Only WhatsApp MCP Server
 
 This is a Model Context Protocol (MCP) server for WhatsApp.
 
