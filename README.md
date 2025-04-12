@@ -1,8 +1,15 @@
-# Read Only WhatsApp MCP Server
+# Read Only WhatsApp MCP Server + Ollama + OpenWebUI Integration
 
-This is a Model Context Protocol (MCP) server for WhatsApp.
+When Luke Harris dropped the OG Whastsapp MCP server it was amazing and it integrated well with calude. However, I wanted something that's completely local and runs within my machine without any external access or flow of data. This github shows how to set one up 
 
-With this you can search and read your personal Whatsapp messages (including images, videos, documents, and audio messages), search your contacts and send messages to either individuals or groups. You can also send media files including images, videos, documents, and audio messages.
+Step 1: Install Ollama and run a model (ollama run deepseek-r1)
+Step 2: Install and run a WebUI that can access Ollama models ( uvx --python 3.11 open-webui@latest serve --port 11454). WebUI runs on port 11454, visit localhost:11454  
+Step 3: Install and run the Whatsapp bridge given within the Whatsapp MCP server github (go run main.go)
+Step 4: Install and run the MCP Proxy (MCPO) using a config file (uvx mcpo --config ~/PATH/mcpproxy/config.json)
+Step 5: Visit localhost:11454, and visit settings, add tool and set the API endpoint for a tool as http://localhost:11454/whatsapp. 
+Step 6: Start a new chat and then ask for what you want
+
+
 
 It connects to your **personal WhatsApp account** directly via the Whatsapp web multidevice API (using the [whatsmeow](https://github.com/tulir/whatsmeow) library). All your messages are stored locally in a SQLite database and only sent to an LLM (such as Claude) when the agent accesses them through tools (which you control).
 

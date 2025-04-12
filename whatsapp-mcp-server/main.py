@@ -48,7 +48,7 @@ def list_messages(
         query: Optional search term to filter messages by content
         limit: Maximum number of messages to return (default 20)
         page: Page number for pagination (default 0)
-        include_context: Whether to include messages before and after matches (default True)
+        include_context: Whether to include messages before and after matches (default true)
         context_before: Number of messages to include before each match (default 1)
         context_after: Number of messages to include after each match (default 1)
     """
